@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { DateRangeFilter } from "@/components/DateRangeFilter";
 import { TopItemsWidget } from "@/components/TopItemsWidget";
 import { EventsChart } from "@/components/EventsChart";
+import { EventsStatusChart } from "@/components/EventsStatusChart";
 import { StatCard } from "@/components/StatCard";
 import { fetchDashboardStats } from "@/services/mockData";
 import { DashboardStats } from "@/types/alert";
@@ -84,8 +85,15 @@ export default function DashboardPage() {
           />
         </div>
         
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2 mb-6">
           <EventsChart
+            data={stats?.eventsByDay || []}
+            loading={loading}
+          />
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 mb-6">
+          <EventsStatusChart
             data={stats?.eventsByDay || []}
             loading={loading}
           />

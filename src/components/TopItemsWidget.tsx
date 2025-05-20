@@ -57,7 +57,21 @@ export function TopItemsWidget({
     });
   };
 
-  const colors = ["#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe", "#dbeafe"];
+  // Define different color schemes based on filter type
+  const getColorScheme = () => {
+    switch(filterType) {
+      case "srcAddr":
+        return ["#8B5CF6", "#A78BFA", "#C4B5FD", "#DDD6FE", "#EDE9FE"]; // Purples for source IPs
+      case "dstAddr":
+        return ["#0EA5E9", "#38BDF8", "#7DD3FC", "#BAE6FD", "#E0F2FE"]; // Blues for destination IPs
+      case "dstPort":
+        return ["#F97316", "#FB923C", "#FDBA74", "#FED7AA", "#FFEDD5"]; // Oranges for ports
+      default:
+        return ["#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe", "#dbeafe"]; // Default blues
+    }
+  };
+  
+  const colors = getColorScheme();
   const getColor = (index: number) => colors[index % colors.length];
 
   const renderChart = () => (
@@ -80,11 +94,12 @@ export function TopItemsWidget({
             dataKey="value" 
             onClick={handleBarClick} 
             className="cursor-pointer"
+            name={title}
           >
             {chartData.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={index === activeIndex ? "#1d4ed8" : getColor(index)}
+                fill={index === activeIndex ? colors[0] : getColor(index)}
               />
             ))}
           </Bar>

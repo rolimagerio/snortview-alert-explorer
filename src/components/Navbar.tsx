@@ -42,7 +42,10 @@ export function Navbar() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/register">Cadastrar Usuário</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link to="/login">Sair</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>

@@ -3,16 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from "recharts";
 
-interface EventsChartProps {
+interface EventsStatusChartProps {
   data: { date: string; count: number }[];
   loading?: boolean;
 }
 
-export function EventsChart({ data, loading = false }: EventsChartProps) {
-  // Preparar dados para o gráfico (simplificar datas)
+export function EventsStatusChart({ data, loading = false }: EventsStatusChartProps) {
+  // Preparar dados para o gráfico (simplificar datas e adicionar dados de status)
   const chartData = data.map(item => ({
     date: item.date.split('-').slice(1).join('/'), // Formatar como MM/DD
-    count: item.count,
     // Simular dados de bloqueados (30-40% dos eventos totais) e permitidos (resto)
     blocked: Math.round(item.count * (0.3 + Math.random() * 0.1)),
     allowed: Math.round(item.count * (0.6 + Math.random() * 0.1))
@@ -21,7 +20,7 @@ export function EventsChart({ data, loading = false }: EventsChartProps) {
   return (
     <Card className="col-span-2">
       <CardHeader>
-        <CardTitle className="text-lg">Eventos por Dia</CardTitle>
+        <CardTitle className="text-lg">Status de Eventos por Dia</CardTitle>
       </CardHeader>
       <CardContent className="h-[300px]">
         {loading ? (
@@ -31,14 +30,13 @@ export function EventsChart({ data, loading = false }: EventsChartProps) {
         ) : data.length > 0 ? (
           <ChartContainer
             config={{
-              events: {
-                color: "#2563eb",
-              },
               blocked: {
                 color: "#ea384c",
+                label: "Bloqueados",
               },
               allowed: {
                 color: "#22c55e",
+                label: "Permitidos",
               },
             }}
           >
@@ -51,7 +49,9 @@ export function EventsChart({ data, loading = false }: EventsChartProps) {
                   content={<ChartTooltipContent />}
                   cursor={{ fill: "rgba(0, 0, 0, 0.1)" }}
                 />
-                <Bar dataKey="count" name="events" fill="var(--color-events)" />
+                <Legend />
+                <Bar dataKey="blocked" name="blocked" fill="var(--color-blocked)" />
+                <Bar dataKey="allowed" name="allowed" fill="var(--color-allowed)" />
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>
