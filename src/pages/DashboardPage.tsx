@@ -68,16 +68,19 @@ export default function DashboardPage() {
             title="Top 10 IPs de Origem"
             items={stats?.topSourceIPs || []}
             loading={loading}
+            filterType="srcAddr"
           />
           <TopItemsWidget
             title="Top 10 IPs de Destino"
             items={stats?.topDestinationIPs || []}
             loading={loading}
+            filterType="dstAddr"
           />
           <TopItemsWidget
             title="Top Portas de Destino"
             items={stats?.topDestinationPorts || []}
             loading={loading}
+            filterType="dstPort"
           />
         </div>
         
