@@ -2,6 +2,8 @@
 export interface User {
   id: number;
   username: string;
+  email?: string;
+  isActive: boolean;
 }
 
 export interface AuthContextType {

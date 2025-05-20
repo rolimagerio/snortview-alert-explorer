@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
 interface EventsChartProps {
   data: { date: string; count: number }[];
@@ -43,15 +43,21 @@ export function EventsChart({ data, loading = false }: EventsChartProps) {
             }}
           >
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <BarChart 
+                data={chartData} 
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                barGap={0}
+                barCategoryGap={8}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
-                <ChartTooltip
+                <Legend />
+                <Tooltip
                   content={<ChartTooltipContent />}
                   cursor={{ fill: "rgba(0, 0, 0, 0.1)" }}
                 />
-                <Bar dataKey="count" name="events" fill="var(--color-events)" />
+                <Bar dataKey="count" name="Total de eventos" fill="#2563eb" />
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>

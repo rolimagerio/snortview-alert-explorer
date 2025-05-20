@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,6 +11,7 @@ import DashboardPage from "./pages/DashboardPage";
 import SearchPage from "./pages/SearchPage";
 import NotFound from "./pages/NotFound";
 import RegisterPage from "./pages/RegisterPage";
+import UserManagementPage from "./pages/UserManagementPage";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,7 @@ const App = () => (
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
             <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
+            <Route path="/users" element={<ProtectedRoute><UserManagementPage /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

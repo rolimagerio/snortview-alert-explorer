@@ -11,7 +11,8 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  Cell
+  Cell,
+  LabelList
 } from "recharts";
 import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 
@@ -31,10 +32,14 @@ export function TopItemsWidget({
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   
-  const chartData = items.map(item => ({
-    name: item.label,
-    value: item.count
-  }));
+  // Create a deeper copy of items to avoid modifying the original data
+  const chartData = [...items]
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10)
+    .map(item => ({
+      name: item.label,
+      value: item.count
+    }));
 
   const handleBarClick = (data: any, index: number) => {
     setActiveIndex(index);
@@ -75,14 +80,18 @@ export function TopItemsWidget({
   const getColor = (index: number) => colors[index % colors.length];
 
   const renderChart = () => (
-    <ChartContainer className="h-[200px] w-full" config={{}}>
+    <ChartContainer className="h-[360px] w-full" config={{}}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={chartData} layout="vertical">
-          <XAxis type="number" hide />
+        <BarChart 
+          data={chartData}
+          layout="vertical"
+          margin={{ top: 5, right: 30, left: 70, bottom: 5 }}
+        >
+          <XAxis type="number" />
           <YAxis 
             type="category" 
             dataKey="name" 
-            width={120}
+            width={150}
             tick={{ fontSize: 12 }}
             tickLine={false}
           />
@@ -102,6 +111,7 @@ export function TopItemsWidget({
                 fill={index === activeIndex ? colors[0] : getColor(index)}
               />
             ))}
+            <LabelList dataKey="value" position="right" />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
