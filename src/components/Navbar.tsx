@@ -1,55 +1,54 @@
 
+import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { useAuth } from "@/context/AuthContext";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Navbar() {
-  const { user, logout } = useAuth();
-
   return (
-    <div className="border-b">
-      <div className="flex h-16 items-center px-4">
-        <Link to="/" className="flex items-center font-semibold text-lg mr-4">
-          SnortView
-        </Link>
-        <NavigationMenu className="mr-4">
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <Link to="/" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Dashboard
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link to="/search" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Busca Detalhada
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-        <div className="ml-auto flex items-center space-x-4">
-          {user && (
-            <>
-              <span className="text-sm text-muted-foreground">
-                Olá, {user.username}
-              </span>
-              <Button variant="outline" onClick={logout}>
-                Sair
+    <header className="bg-white border-b sticky top-0 z-50">
+      <div className="container mx-auto px-4 md:px-6 flex h-14 items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <Link to="/" className="font-semibold text-lg">
+            SnortView
+          </Link>
+          <nav className="hidden md:flex items-center space-x-4">
+            <Link to="/" className="text-sm font-medium hover:underline">
+              Dashboard
+            </Link>
+            <Link to="/search" className="text-sm font-medium hover:underline">
+              Busca Detalhada
+            </Link>
+          </nav>
+        </div>
+        <div className="flex items-center space-x-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="relative h-8 rounded-full"
+              >
+                <span>Usuário</span>
               </Button>
-            </>
-          )}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link to="/login">Sair</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
-    </div>
+    </header>
   );
 }

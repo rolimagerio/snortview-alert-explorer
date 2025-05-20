@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { DateRangeFilter } from "@/components/DateRangeFilter";
@@ -118,6 +117,29 @@ export default function SearchPage() {
     loadAlerts();
   }, [currentPage, perPage, sortField, sortOrder]);
 
+  // Parse URL params for filtering if coming from TopItemsWidget click
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    
+    // Set filter values from URL parameters
+    const srcAddr = params.get('srcAddr');
+    const dstAddr = params.get('dstAddr');
+    const dstPort = params.get('dstPort');
+    
+    if (srcAddr || dstAddr || dstPort) {
+      const updatedFilters = { ...filters };
+      
+      if (srcAddr) updatedFilters.srcAddr = srcAddr;
+      if (dstAddr) updatedFilters.dstAddr = dstAddr;
+      if (dstPort) updatedFilters.dstPort = dstPort;
+      
+      setFilters(updatedFilters);
+      
+      // Trigger search with these filters
+      setTimeout(() => loadAlerts(), 0);
+    }
+  }, []);
+
   const totalPages = Math.ceil(totalAlerts / perPage);
 
   const getSortIndicator = (field: keyof SnortAlert) => {
@@ -203,7 +225,7 @@ export default function SearchPage() {
                   <SelectValue placeholder="Selecione..." />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos</SelectItem>
+                  <SelectItem value="all">Todos</SelectItem>
                   {protoOptions.map(option => (
                     <SelectItem key={option} value={option}>
                       {option}
@@ -223,7 +245,7 @@ export default function SearchPage() {
                   <SelectValue placeholder="Selecione..." />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todas</SelectItem>
+                  <SelectItem value="all">Todas</SelectItem>
                   {actionOptions.map(option => (
                     <SelectItem key={option} value={option}>
                       {option}
