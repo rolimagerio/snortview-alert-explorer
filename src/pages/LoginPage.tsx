@@ -61,7 +61,7 @@ export default function LoginPage() {
                 required
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Para fins de demonstração, use qualquer nome de usuário e a senha "password"
+                Para fins de demonstração, use "admin" com a senha "admin123" para acesso de administrador
               </p>
             </div>
           </CardContent>

@@ -3,6 +3,7 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import { AuthContextType, User } from "@/types/auth";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { verifyCredentials } from "@/services/authService";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -24,8 +25,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (username: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
-      // For demo purposes, we'll accept any username/password where password is "password"
-      if (password !== "password") {
+      // Verify credentials using our authentication service
+      const authenticatedUser = verifyCredentials(username, password);
+      
+      if (!authenticatedUser) {
         toast({
           title: "Erro de autenticação",
           description: "Nome de usuário ou senha incorretos",
@@ -34,9 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return false;
       }
 
-      const user: User = { id: 1, username, isActive: true };
-      setUser(user);
-      localStorage.setItem("user", JSON.stringify(user));
+      setUser(authenticatedUser);
+      localStorage.setItem("user", JSON.stringify(authenticatedUser));
       toast({
         title: "Login bem-sucedido",
         description: `Bem-vindo, ${username}!`,

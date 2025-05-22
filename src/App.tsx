@@ -12,6 +12,7 @@ import SearchPage from "./pages/SearchPage";
 import NotFound from "./pages/NotFound";
 import RegisterPage from "./pages/RegisterPage";
 import UserManagementPage from "./pages/UserManagementPage";
+import DatabaseConfigPage from "./pages/DatabaseConfigPage";
 
 const queryClient = new QueryClient();
 
@@ -24,10 +25,11 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/register" element={<ProtectedRoute><RegisterPage /></ProtectedRoute>} />
             <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
             <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
             <Route path="/users" element={<ProtectedRoute><UserManagementPage /></ProtectedRoute>} />
+            <Route path="/database-config" element={<ProtectedRoute><DatabaseConfigPage /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

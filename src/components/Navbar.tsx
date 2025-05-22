@@ -11,9 +11,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Database } from "lucide-react";
 
 export function Navbar() {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   
   return (
     <header className="bg-white border-b sticky top-0 z-50">
@@ -32,6 +33,14 @@ export function Navbar() {
             <Link to="/users" className="text-sm font-medium hover:underline">
               Usuários
             </Link>
+            {user?.role === 'admin' && (
+              <Link to="/database-config" className="text-sm font-medium hover:underline">
+                <span className="flex items-center gap-1">
+                  <Database size={16} />
+                  Configurar Banco
+                </span>
+              </Link>
+            )}
           </nav>
         </div>
         <div className="flex items-center space-x-4">
@@ -42,18 +51,31 @@ export function Navbar() {
                 size="sm"
                 className="relative h-8 rounded-full"
               >
-                <span>Usuário</span>
+                <span>{user?.username || "Usuário"}</span>
+                {user?.role === 'admin' && (
+                  <span className="ml-2 bg-green-100 text-green-800 text-xs px-1.5 py-0.5 rounded">
+                    Admin
+                  </span>
+                )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link to="/register">Cadastrar Usuário</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/users">Gerenciar Usuários</Link>
-              </DropdownMenuItem>
+              {user?.role === 'admin' && (
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link to="/register">Cadastrar Usuário</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/users">Gerenciar Usuários</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/database-config">Configurar Banco</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </>
+              )}
               <DropdownMenuItem onClick={logout}>
                 Sair
               </DropdownMenuItem>

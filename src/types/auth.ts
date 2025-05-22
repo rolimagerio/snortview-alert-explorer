@@ -4,6 +4,7 @@ export interface User {
   username: string;
   email?: string;
   isActive: boolean;
+  role?: 'admin' | 'user';
 }
 
 export interface AuthContextType {
@@ -11,4 +12,13 @@ export interface AuthContextType {
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
+}
+
+export interface DatabaseConfig {
+  host: string;
+  port: number;
+  database: string;
+  username: string;
+  password: string;
+  ssl: boolean;
 }
